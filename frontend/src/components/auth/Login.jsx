@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
@@ -11,8 +11,10 @@ import { toast } from 'sonner'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLoading, setUser } from '@/redux/authSlice'
 import { Loader2 } from 'lucide-react'
+import { ThemeContext } from '@/ThemeContext'
 
 const Login = () => {
+    const {theme, toggleTheme} = useContext(ThemeContext)
     const [input, setInput] = useState({
         email: "",
         password: "",
@@ -54,7 +56,7 @@ const Login = () => {
         }
     },[])
     return (
-        <div>
+        <div className={`h-screen ${theme === "dark" ? "bg-[#191919] text-gray-300" : ""}`}>
             <Navbar />
             <div className='flex items-center justify-center max-w-7xl mx-auto'>
                 <form onSubmit={submitHandler} className='w-1/2 border border-gray-200 rounded-md p-4 my-10'>

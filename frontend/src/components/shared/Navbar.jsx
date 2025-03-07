@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Button } from '../ui/button'
 import { Avatar, AvatarImage } from '../ui/avatar'
@@ -9,8 +9,13 @@ import axios from 'axios'
 import { USER_API_END_POINT } from '@/utils/constant'
 import { setUser } from '@/redux/authSlice'
 import { toast } from 'sonner'
+import ThemeToggle from '../ThemeToggle'
+import { ThemeContext } from '@/ThemeContext'
 
 const Navbar = () => {
+
+    const {theme, toggleTheme} = useContext(ThemeContext)
+
     const { user } = useSelector(store => store.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -29,10 +34,10 @@ const Navbar = () => {
         }
     }
     return (
-        <div className='bg-white'>
+        <div className={`border-b ${theme === "dark" ? "border-gray-800 bg-[#191919] text-slate-300" : "bg-white"}`}>
             <div className='flex items-center justify-between mx-auto max-w-7xl h-16'>
                 <div>
-                    <h1 className='text-2xl font-bold'>Job<span className='text-[#F83002]'>Portal</span></h1>
+                    <h1 className={`text-2xl font-bold ${theme === "dark" ? "text-slate-300" : "text-black"}`}>Cold<span className='text-[#ec2525]'>Cup</span></h1>
                 </div>
                 <div className='flex items-center gap-12'>
                     <ul className='flex font-medium items-center gap-5'>
@@ -55,9 +60,9 @@ const Navbar = () => {
                     </ul>
                     {
                         !user ? (
-                            <div className='flex items-center gap-2'>
-                                <Link to="/login"><Button variant="outline">Login</Button></Link>
-                                <Link to="/signup"><Button className="bg-[#6A38C2] hover:bg-[#5b30a6]">Signup</Button></Link>
+                            <div className={`flex items-center gap-2 ${theme === "dark" ? "text-slate-700" : "text-black"}`}>
+                                <Link to="/login"><Button variant="outline" className={`border-none outline-none ${theme === "dark" ? "bg-slate-700 text-gray-300 hover:bg-slate-700 hover:text-slate-300" : "bg-gray-200 hover:bg-gray-300 text-slate-700"}`}>Login</Button></Link>
+                                <Link to="/signup"><Button className="bg-[#ec2525] hover:bg-[#d42121]">Signup</Button></Link>
                             </div>
                         ) : (
                             <Popover>
@@ -97,6 +102,7 @@ const Navbar = () => {
                             </Popover>
                         )
                     }
+                    <ThemeToggle />
 
                 </div>
             </div>

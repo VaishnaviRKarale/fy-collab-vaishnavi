@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Navbar from './shared/Navbar'
 import HeroSection from './HeroSection'
 import CategoryCarousel from './CategoryCarousel'
@@ -7,8 +7,12 @@ import Footer from './shared/Footer'
 import useGetAllJobs from '@/hooks/useGetAllJobs'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { ThemeContext } from '@/ThemeContext'
 
 const Home = () => {
+
+  const {theme, toggleTheme} = useContext(ThemeContext)
+
   useGetAllJobs();
   const { user } = useSelector(store => store.auth);
   const navigate = useNavigate();
@@ -18,7 +22,7 @@ const Home = () => {
     }
   }, []);
   return (
-    <div>
+    <div className={`${theme === "dark" ? "bg-[#191919]" : "bg-white"}`}>
       <Navbar />
       <HeroSection />
       <CategoryCarousel />
