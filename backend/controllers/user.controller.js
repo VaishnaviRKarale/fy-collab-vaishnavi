@@ -16,7 +16,9 @@ export const register = async (req, res) => {
         };
         const file = req.file;
         const fileUri = getDataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+        const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+            access_mode: "public"
+        });
 
         const user = await User.findOne({ email });
         if (user) {
@@ -111,61 +113,67 @@ export const logout = async (req, res) => {
         console.log(error);
     }
 }
+
+
+
+
 export const updateProfile = async (req, res) => {
     try {
         const { fullname, email, phoneNumber, bio, skills } = req.body;
-        
-        const file = req.file;
-        // cloudinary ayega idhar
-        const fileUri = getDataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+        const file = req.file; 
 
+        let cloudResponse = null;
 
-
-        let skillsArray;
-        if(skills){
-            skillsArray = skills.split(",");
+        // ✅ Upload only if a new resume file is provided
+        if (file) {
+            const fileUri = getDataUri(file);
+            cloudResponse = await cloudinary.uploader.upload(fileUri.content);
         }
-        const userId = req.id; // middleware authentication
+
+        let skillsArray = skills ? skills.split(",") : []; // Convert skills to an array if provided
+
+        const userId = req.id; // Middleware authentication
         let user = await User.findById(userId);
 
         if (!user) {
             return res.status(400).json({
                 message: "User not found.",
-                success: false
-            })
-        }
-        // updating data
-        if(fullname) user.fullname = fullname
-        if(email) user.email = email
-        if(phoneNumber)  user.phoneNumber = phoneNumber
-        if(bio) user.profile.bio = bio
-        if(skills) user.profile.skills = skillsArray
-      
-        // resume comes later here...
-        if(cloudResponse){
-            user.profile.resume = cloudResponse.secure_url // save the cloudinary url
-            user.profile.resumeOriginalName = file.originalname // Save the original file name
+                success: false,
+            });
         }
 
+        // ✅ Update only the provided fields
+        if (fullname) user.fullname = fullname;
+        if (email) user.email = email;
+        if (phoneNumber) user.phoneNumber = phoneNumber;
+        if (bio) user.profile.bio = bio;
+        if (skills) user.profile.skills = skillsArray;
+
+        // ✅ Update resume **only if a new file is uploaded**, otherwise keep the old one
+        if (cloudResponse) {
+            user.profile.resume = cloudResponse.secure_url; // Save Cloudinary URL
+            user.profile.resumeOriginalName = file.originalname; // Save original file name
+        }
 
         await user.save();
 
+        // ✅ Return updated user data (excluding sensitive info)
         user = {
             _id: user._id,
             fullname: user.fullname,
             email: user.email,
             phoneNumber: user.phoneNumber,
             role: user.role,
-            profile: user.profile
-        }
+            profile: user.profile,
+        };
 
         return res.status(200).json({
-            message:"Profile updated successfully.",
+            message: "Profile updated successfully.",
             user,
-            success:true
-        })
+            success: true,
+        });
     } catch (error) {
-        console.log("Something: ", error);
+        console.error("Something went wrong: ", error);
+        return res.status(500).json({ message: "Internal server error", success: false });
     }
-}
+};

@@ -71,30 +71,30 @@ const Navbar = () => {
                                         <AvatarImage src={user?.profile?.profilePhoto} alt="@shadcn" />
                                     </Avatar>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-80">
-                                    <div className=''>
-                                        <div className='flex gap-2 space-y-2'>
+                                <PopoverContent className={`w-80 border-none outline-none ${theme === "dark" ? "bg-[#252525] text-white" : "shadow-[5px_5px_35px_5px_rgba(0,0,0,0.08)]"}`}>
+                                    <div>
+                                        <div className='flex items-center gap-2 space-y-2'>
                                             <Avatar className="cursor-pointer">
                                                 <AvatarImage src={user?.profile?.profilePhoto} alt="@shadcn" />
                                             </Avatar>
                                             <div>
-                                                <h4 className='font-medium'>{user?.fullname}</h4>
-                                                <p className='text-sm text-muted-foreground'>{user?.profile?.bio}</p>
+                                                <h4 className='font-semibold'>{user?.fullname}</h4>
+                                                <p className={`text-sm ${theme === "dark" ? "text-gray-300 tracking-wide" : ""}`}>{user?.profile?.bio}</p>
                                             </div>
                                         </div>
-                                        <div className='flex flex-col my-2 text-gray-600'>
+                                        <div className={`flex flex-col my-2 ${theme === "dark" ? "text-gray-300" : "text-black"}`}>
                                             {
                                                 user && user.role === 'student' && (
-                                                    <div className='flex w-fit items-center gap-2 cursor-pointer'>
+                                                    <div className={`flex w-fit items-center gap-2 cursor-pointer`}>
                                                         <User2 />
-                                                        <Button variant="link"> <Link to="/profile">View Profile</Link></Button>
+                                                        <Button className={` ${theme === "dark" ? "text-slate-300" : ""}`} variant="link"> <Link to="/profile">View Profile</Link></Button>
                                                     </div>
                                                 )
                                             }
 
                                             <div className='flex w-fit items-center gap-2 cursor-pointer'>
                                                 <LogOut />
-                                                <Button onClick={logoutHandler} variant="link">Logout</Button>
+                                                <Button className={` ${theme === "dark" ? "text-slate-300" : ""}`} onClick={logoutHandler} variant="link">Logout</Button>
                                             </div>
                                         </div>
                                     </div>
