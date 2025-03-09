@@ -108,6 +108,8 @@ const skillsData = {
     "c",
     "c++",
     "java",
+    "dsa",
+    "data structures and algorithms",
     "python",
     "c#",
     "golang",
@@ -368,7 +370,6 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
       }
     });
 
-    // Identify the primary interest area (field with highest match percentage)
     const primaryInterest = Object.keys(matchPercentages).reduce(
       (prev, curr) =>
         matchPercentages[curr] > (matchPercentages[prev] || 0) ? curr : prev,
@@ -403,14 +404,14 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
 
       {analysis && (
         <div
-          className="mt-5 p-5 rounded-lg border transition-all duration-500 ease-in-out"
+          className="mt-10 rounded-lg transition-all duration-500 ease-in-out"
           style={{
             background: theme === "dark" ? "#2B2B2B" : "#F9F9F9",
             borderColor: theme === "dark" ? "#444" : "#ddd",
             boxShadow:
               theme === "dark"
-                ? "0px 0px 15px rgba(255,0,0,0.4)"
-                : "0px 4px 10px rgba(0,0,0,0.1)",
+                ? ""
+                : "",
           }}
         >
           <h2
@@ -465,7 +466,7 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
                   <h4 className="text-sm font-semibold capitalize">
                     {field} (Missing Skills)
                   </h4>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap mt-2 gap-2">
                     {skills.slice(0, 5).map((skill, index) => (
                       <Badge
                         key={index}
