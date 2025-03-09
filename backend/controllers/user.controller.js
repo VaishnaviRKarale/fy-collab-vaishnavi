@@ -114,7 +114,25 @@ export const logout = async (req, res) => {
     }
 }
 
-
+export const profileView = async(req, res) => {
+    try {
+        const userId = req.params.id
+        const currentUser = await User.findOne({ _id: userId })
+        if(!currentUser) {
+            return res.status(400).json({
+                message: "User is not present",
+                success: false
+            })
+        }
+        return res.status(200).json({
+            message: "User fetched",
+            currentUser,
+            success: true
+        })
+    } catch (error) {
+        console.log("Error at profileView controller in user route: ", error)
+    }
+}
 
 
 export const updateProfile = async (req, res) => {
@@ -124,15 +142,14 @@ export const updateProfile = async (req, res) => {
 
         let cloudResponse = null;
 
-        // ✅ Upload only if a new resume file is provided
         if (file) {
             const fileUri = getDataUri(file);
             cloudResponse = await cloudinary.uploader.upload(fileUri.content);
         }
 
-        let skillsArray = skills ? skills.split(",") : []; // Convert skills to an array if provided
+        let skillsArray = skills ? skills.split(",") : []
 
-        const userId = req.id; // Middleware authentication
+        const userId = req.id
         let user = await User.findById(userId);
 
         if (!user) {
@@ -142,22 +159,20 @@ export const updateProfile = async (req, res) => {
             });
         }
 
-        // ✅ Update only the provided fields
         if (fullname) user.fullname = fullname;
         if (email) user.email = email;
         if (phoneNumber) user.phoneNumber = phoneNumber;
         if (bio) user.profile.bio = bio;
         if (skills) user.profile.skills = skillsArray;
 
-        // ✅ Update resume **only if a new file is uploaded**, otherwise keep the old one
+        
         if (cloudResponse) {
-            user.profile.resume = cloudResponse.secure_url; // Save Cloudinary URL
-            user.profile.resumeOriginalName = file.originalname; // Save original file name
+            user.profile.resume = cloudResponse.secure_url
+            user.profile.resumeOriginalName = file.originalname
         }
 
         await user.save();
 
-        // ✅ Return updated user data (excluding sensitive info)
         user = {
             _id: user._id,
             fullname: user.fullname,
@@ -175,5 +190,50 @@ export const updateProfile = async (req, res) => {
     } catch (error) {
         console.error("Something went wrong: ", error);
         return res.status(500).json({ message: "Internal server error", success: false });
+    }
+};
+
+
+// export const getusers = async (req, res) => {
+//     try {
+//         const users = await User.find({ role: "student" }, "-password")
+        
+//         return res.status(200).json({
+//             message: "Users fetched successfully",
+//             users,
+//             success: true
+//         });
+//     } catch (error) {
+//         console.log("Error at getusers controller in user routes: ", error);
+//         return res.status(500).json({
+//             message: "Internal Server Error",
+//             error: error.message,
+//             success: false
+//         });
+//     }
+// };
+
+export const getusers = async (req, res) => {
+    try {
+        const currentUserId = req.id
+        // console.log(req.id)
+        if (!currentUserId) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        const users = await User.find({ role: "student", _id: { $ne: currentUserId } }, "-password");
+
+        return res.status(200).json({
+            message: "Users fetched successfully",
+            users,
+            success: true,
+        });
+    } catch (error) {
+        console.log("Error at getusers controller in user routes: ", error);
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error: error.message,
+            success: false,
+        });
     }
 };

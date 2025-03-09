@@ -6,6 +6,7 @@ import Home from './components/Home'
 import Jobs from './components/Jobs'
 import Browse from './components/Browse'
 import Profile from './components/Profile'
+import ProfileId from './components/ProfileId'
 import JobDescription from './components/JobDescription'
 import Companies from './components/admin/Companies'
 import CompanyCreate from './components/admin/CompanyCreate'
@@ -14,6 +15,7 @@ import AdminJobs from "./components/admin/AdminJobs";
 import PostJob from './components/admin/PostJob'
 import Applicants from './components/admin/Applicants'
 import ProtectedRoute from './components/admin/ProtectedRoute'
+import AllUsers from './components/AllUsers'
 
 
 const appRouter = createBrowserRouter([
@@ -44,6 +46,14 @@ const appRouter = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />
+  },
+  {
+    path: "/profile/:id",
+    element: <ProfileId />
+  },
+  {
+    path: "/network",
+    element: <AllUsers />
   },
 
 

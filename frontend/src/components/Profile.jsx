@@ -12,6 +12,7 @@ import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
 import { ThemeContext } from "@/ThemeContext";
 import { toast } from "sonner";
 import SkillsAnalyser from "./SkillsAnalyser";
+import DashboardFirstDiv from "./DashboardFirstDiv";
 
 // const skills = ["Html", "Css", "Javascript", "Reactjs"]
 const isResume = true;
@@ -143,6 +144,12 @@ const Profile = () => {
               )}
             </div>
           </div>
+
+          {/* <DashboardFirstDiv isResume={isResume} user={user} theme={theme} setOpen={setOpen} /> */}
+
+
+
+
           <div
             className={`p-8 rounded-xl ${
               theme === "dark"
@@ -151,7 +158,6 @@ const Profile = () => {
             }`}
           >
             <h1 className="font-bold text-lg my-5">Applied Jobs</h1>
-            {/* Applied Job Table   */}
             <AppliedJobTable />
           </div>
           <UpdateProfileDialog open={open} setOpen={setOpen} />
