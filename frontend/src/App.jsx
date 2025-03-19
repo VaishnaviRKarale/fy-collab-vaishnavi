@@ -16,6 +16,7 @@ import PostJob from './components/admin/PostJob'
 import Applicants from './components/admin/Applicants'
 import ProtectedRoute from './components/admin/ProtectedRoute'
 import AllUsers from './components/AllUsers'
+import WrongPage from './components/WrongPage'
 
 
 const appRouter = createBrowserRouter([
@@ -55,6 +56,11 @@ const appRouter = createBrowserRouter([
     path: "/network",
     element: <AllUsers />
   },
+  {
+    path: "/*",
+    element: <WrongPage />
+  },
+  
 
 
 

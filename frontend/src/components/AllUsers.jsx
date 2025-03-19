@@ -1,10 +1,12 @@
 import { ALL_USERS_API } from "@/utils/constant";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Navbar from "./shared/Navbar";
 import { useNavigate } from "react-router-dom";
+import { ThemeContext } from "@/ThemeContext";
 
 const AllUsers = () => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
 
@@ -12,9 +14,9 @@ const AllUsers = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(ALL_USERS_API, {
-            withCredentials: true
+          withCredentials: true,
         });
-        setUsers(response.data.users); // Ensure backend returns users array
+        setUsers(response.data.users);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -24,22 +26,60 @@ const AllUsers = () => {
   }, []);
 
   return (
-    <div>
+    <div
+      className={`${
+        theme === "dark"
+          ? "bg-[#191919] min-h-screen text-gray-200"
+          : "bg-white text-black"
+      }`}
+    >
       <Navbar />
-      <h2>All Users</h2>
       {users.length === 0 ? (
         <p>No users found</p>
       ) : (
-        <ul>
-          {users.map((user) => (
-            <li key={user._id}>
-              {user.fullname} - {user.email}
-              <button onClick={() => navigate(`/profile/${user._id}`)}>
-                Visit
-              </button>
-            </li>
-          ))}
-        </ul>
+        <>
+          <div
+            className={`max-w-7xl mx-auto py-8 ${
+              theme === "dark" ? "bg-[#191919]" : ""
+            }`}
+          >
+            <h2
+              className={`text-3xl mb-8 text-center font-semibold ${
+                theme === "dark" ? "" : ""
+              }`}
+            >
+              All Users
+            </h2>
+            <div className={`flex gap-4 items-start`}>
+              {users.map((user) => (
+                <div
+                  key={user._id}
+                  className="bg-[#2b2b2b] text-white p-6 rounded-2xl shadow-lg max-w-sm mx-auto hover:shadow-2xl transition-shadow duration-300"
+                >
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={user?.profile?.profilePhoto}
+                      alt="Profile"
+                      className="w-24 h-24 rounded-full border-4 border-gray-700 shadow-md"
+                    />
+                    <h2 className="text-xl font-semibold mt-4">
+                      {user.fullname}
+                    </h2>
+                    <p className="text-gray-300 mt-3 text-center">
+                      {user?.profile?.bio}
+                    </p>
+                    <button
+                      className="mt-4 bg-[#ec2525] hover:bg-[#d92121] text-white px-4 py-2 rounded-lg transition-all"
+                      onClick={() => navigate(`/profile/${user._id}`)}
+                    >
+                      Visit
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

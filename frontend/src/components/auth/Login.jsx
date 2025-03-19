@@ -56,12 +56,12 @@ const Login = () => {
         }
     },[])
     return (
-        <div className={`h-screen ${theme === "dark" ? "bg-[#191919] text-gray-300" : ""}`}>
+        <div className={`h-screen ${theme === "dark" ? "bg-[#191919] text-gray-200" : ""}`}>
             <Navbar />
             <div className='flex items-center justify-center max-w-7xl mx-auto'>
-                <form onSubmit={submitHandler} className='w-1/2 border border-gray-200 rounded-md p-4 my-10'>
+                <form onSubmit={submitHandler} className={`shadow-md w-1/2 rounded-md p-8 my-10 ${theme === "dark" ? "bg-[#2b2b2b]" : "bg-[#f5f5f5]"}`}>
                     <h1 className='font-bold text-xl mb-5'>Login</h1>
-                    <div className='my-2'>
+                    <div className='mt-10 flex flex-col gap-3'>
                         <Label>Email</Label>
                         <Input
                             type="email"
@@ -69,10 +69,11 @@ const Login = () => {
                             name="email"
                             onChange={changeEventHandler}
                             placeholder=""
+                            className={`border-none outline-none ${theme === "dark" ? "bg-[#3b3b3b]" : ""}`}
                         />
                     </div>
 
-                    <div className='my-2'>
+                    <div className='mt-5 flex flex-col gap-3'>
                         <Label>Password</Label>
                         <Input
                             type="password"
@@ -80,6 +81,7 @@ const Login = () => {
                             name="password"
                             onChange={changeEventHandler}
                             placeholder=""
+                            className={`border-none outline-none ${theme === "dark" ? "bg-[#3b3b3b]" : ""}`}
                         />
                     </div>
                     <div className='flex items-center justify-between'>
@@ -87,6 +89,7 @@ const Login = () => {
                             <div className="flex items-center space-x-2">
                                 <Input
                                     type="radio"
+                                    id="r1"
                                     name="role"
                                     value="student"
                                     checked={input.role === 'student'}
@@ -99,6 +102,7 @@ const Login = () => {
                                 <Input
                                     type="radio"
                                     name="role"
+                                    id="r2"
                                     value="recruiter"
                                     checked={input.role === 'recruiter'}
                                     onChange={changeEventHandler}

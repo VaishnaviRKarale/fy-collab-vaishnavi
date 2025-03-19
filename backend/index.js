@@ -24,16 +24,13 @@ app.use(cors(corsOptions))
 
 const PORT = process.env.PORT || 3000
 
-
 app.use("/api/v1/user", userRoute)
 app.use("/api/v1/company", companyRoute)
 app.use("/api/v1/job", jobRoute)
 app.use("/api/v1/application", applicationRoute)
 
-
-
 app.listen(PORT,(err) => {
     connectDB()
     if(err) console.log("Error at port init: ", err)
-    else console.log(`Server running at port ${PORT}`)
+    else console.log(`Server is running at port http://localhost:${PORT}`)
 })

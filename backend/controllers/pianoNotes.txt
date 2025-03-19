@@ -1,0 +1,7 @@
+C Major => G C E || [C E G] (m4) C||C2 C||C1
+
+F Major => A C F || [F A C] (m4) F||F2 F||F1
+
+G Major => G B D (m4) G||G2 G||G1
+
+A Minor => A C E (3/4) || A||A2 A||A1
