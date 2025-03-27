@@ -71,7 +71,7 @@ const JobDescription = () => {
     <>
       <Navbar />
       <div
-        className={`h-screen mx-auto px-[8%] pt-10 ${
+        className={`min-h-screen h-max mx-auto px-[8%] pt-10 pb-10 ${
           theme === "dark" ? "text-gray-300 bg-[#191919]" : ""
         }`}
       >
@@ -128,9 +128,9 @@ const JobDescription = () => {
         </h1>
         <div className="my-4">
           <dl className="space-y-2">
-            <div className="flex">
+            <div className="flex gap-2">
               <dt
-                className={`font-bold w-32 ${
+                className={`font-bold ${
                   theme === "dark" ? "text-white" : ""
                 }`}
               >
@@ -139,9 +139,9 @@ const JobDescription = () => {
               <dd className="font-normal">{singleJob?.title}</dd>
             </div>
 
-            <div className="flex">
+            <div className="flex gap-2">
               <dt
-                className={`font-bold w-32 ${
+                className={`font-bold ${
                   theme === "dark" ? "text-white" : ""
                 }`}
               >
@@ -150,9 +150,9 @@ const JobDescription = () => {
               <dd className="font-normal">{singleJob?.location}</dd>
             </div>
 
-            <div className="flex">
+            <div className="flex gap-2">
               <dt
-                className={`font-bold w-32 ${
+                className={`font-bold ${
                   theme === "dark" ? "text-white" : ""
                 }`}
               >
@@ -161,9 +161,9 @@ const JobDescription = () => {
               <dd className="font-normal">{singleJob?.description}</dd>
             </div>
 
-            <div className="flex">
+            <div className="flex gap-2">
               <dt
-                className={`font-bold w-32 ${
+                className={`font-bold ${
                   theme === "dark" ? "text-white" : ""
                 }`}
               >
@@ -176,9 +176,9 @@ const JobDescription = () => {
               </dd>
             </div>
 
-            <div className="flex">
+            <div className="flex gap-2">
               <dt
-                className={`font-bold w-32 ${
+                className={`font-bold ${
                   theme === "dark" ? "text-white" : ""
                 }`}
               >
@@ -187,9 +187,9 @@ const JobDescription = () => {
               <dd className="font-normal">{singleJob?.salary} LPA</dd>
             </div>
 
-            <div className="flex">
+            <div className="flex gap-2">
               <dt
-                className={`font-bold w-32 ${
+                className={`font-bold ${
                   theme === "dark" ? "text-white" : ""
                 }`}
               >
@@ -198,9 +198,9 @@ const JobDescription = () => {
               <dd className="font-normal">{singleJob?.applications?.length}</dd>
             </div>
 
-            <div className="flex">
+            <div className="flex gap-2">
               <dt
-                className={`font-bold w-32 ${
+                className={`font-bold ${
                   theme === "dark" ? "text-white" : ""
                 }`}
               >
@@ -260,7 +260,7 @@ const JobDescription = () => {
                     {singleJob.requirements.map((requirement, index) => (
                       <li
                         key={index}
-                        className="flex items-center gap-4 px-6 py-3 rounded-lg border shadow-lg backdrop-blur-md
+                        className="flex items-center gap-2 px-6 py-3 rounded-lg border shadow-lg backdrop-blur-md
               transition-all duration-500 cursor-pointer select-none
               dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200
               bg-gray-100 text-gray-900 border-gray-300
@@ -277,7 +277,7 @@ const JobDescription = () => {
                 </dd>
               </div>
             )} */}
-
+            <br />
             {singleJob?.requirements?.length > 0 && (
               <div
                 className={`mt-6 p-5 rounded-xl border shadow-md transition-all duration-300 

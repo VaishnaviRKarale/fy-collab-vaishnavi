@@ -243,7 +243,6 @@ export const getMatchingJobs = async (req, res) => {
     }
 
     const userSkills = user.profile?.skills || []
-    // console.log("User Skills:", userSkills)
 
     if (userSkills.length === 0) {
       return res.status(404).json({ message: "No skills found for this user" });
@@ -253,9 +252,8 @@ export const getMatchingJobs = async (req, res) => {
       requirements: {
         $in: userSkills.map((skill) => new RegExp(`^${skill}$`, "i")),
       },
-    });
+    }).populate("company", "name")
 
-    // console.log("Matching Jobs Found:", matchingJobs);
 
     if (matchingJobs.length === 0) {
       return res
