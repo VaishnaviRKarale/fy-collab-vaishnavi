@@ -5,7 +5,7 @@ const isAuthenticated = async (req, res, next) => {
         const token = req.cookies.token;
         if (!token) {
             return res.status(401).json({
-                message: "User not authenticated",
+                message: "User not authenticated, may be logout and login again!",
                 success: false,
             })
         }

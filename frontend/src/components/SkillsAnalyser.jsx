@@ -355,13 +355,24 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
     let matchPercentages = {};
 
     Object.entries(skillsData).forEach(([field, skills]) => {
-      let matches = userSkills.filter((skill) =>
-        skills.includes(skill.toLowerCase())
+      // Normalize all skills to lowercase and remove underscores for better matching
+      let formattedUserSkills = userSkills.map((skill) =>
+        skill.toLowerCase().replace(/_/g, " ").trim()
       );
+
+      let formattedFieldSkills = skills.map((skill) =>
+        skill.toLowerCase().replace(/_/g, " ").trim()
+      );
+
+      // Find matches
+      let matches = formattedUserSkills.filter((skill) =>
+        formattedFieldSkills.includes(skill)
+      );
+
       if (matches.length > 0) {
         matchedFields[field] = matches;
-        missingSkills[field] = skills.filter(
-          (skill) => !userSkills.includes(skill)
+        missingSkills[field] = formattedFieldSkills.filter(
+          (skill) => !formattedUserSkills.includes(skill)
         );
         matchPercentages[field] = (
           (matches.length / skills.length) *
@@ -370,11 +381,16 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
       }
     });
 
-    const primaryInterest = Object.keys(matchPercentages).reduce(
-      (prev, curr) =>
-        matchPercentages[curr] > (matchPercentages[prev] || 0) ? curr : prev,
-      null
-    );
+    const primaryInterest =
+      Object.keys(matchPercentages).length > 0
+        ? Object.keys(matchPercentages).reduce(
+            (prev, curr) =>
+              matchPercentages[curr] > (matchPercentages[prev] || 0)
+                ? curr
+                : prev,
+            Object.keys(matchPercentages)[0]
+          )
+        : "No strong match found";
 
     setAnalysis({
       matchedFields,
@@ -382,6 +398,11 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
       matchPercentages,
       primaryInterest,
     });
+
+    // console.log("Matched Fields:", matchedFields);
+    // console.log("Missing Skills:", missingSkills);
+    // console.log("Match Percentages:", matchPercentages);
+    // console.log("Primary Interest:", primaryInterest);
   };
 
   return (
@@ -395,23 +416,25 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
         >
           Analyse in depth
         </Button>
-        <p><span className={`font-semibold ${
-            times >= 7 ? "text-green-500" : "",
-            times 
-
-        }`}>{times}</span> free trails available</p>
+        {/* <p>
+          <span
+            className={`font-semibold ${
+              (times >= 7 ? "text-green-500" : "", times)
+            }`}
+          >
+            {times}
+          </span>{" "}
+          free trails available
+        </p> */}
       </div>
 
       {analysis && (
         <div
           className="mt-10 rounded-lg transition-all duration-500 ease-in-out"
           style={{
-            background: theme === "dark" ? "#2B2B2B" : "#F9F9F9",
-            borderColor: theme === "dark" ? "#444" : "#ddd",
-            boxShadow:
-              theme === "dark"
-                ? ""
-                : "",
+            background: theme === "dark" ? "#2B2B2B" : "#fff",
+            borderColor: theme === "dark" ? "#444" : "#fff",
+            boxShadow: theme === "dark" ? "" : "",
           }}
         >
           <h2
@@ -423,7 +446,7 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
           </h2>
 
           {analysis.primaryInterest && (
-            <p className="mt-2 text-sm">
+            <p className={`mt-2 text-sm ${theme === "dark" ? "" : "text-gray-700"}`}>
               Your primary area of interest appears to be:{" "}
               <span className="font-semibold text-blue-500">
                 {analysis.primaryInterest}
@@ -431,7 +454,7 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
             </p>
           )}
 
-          <div className="mt-4">
+          <div className={`mt-4 ${theme === "dark" ? "" : "text-gray-800"}`}>
             <h3 className="font-semibold text-md">Matched Skills:</h3>
             <div className="flex flex-wrap gap-3">
               {Object.entries(analysis.matchedFields).map(([field, skills]) => (
@@ -439,14 +462,14 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
                   <h4 className="text-sm font-semibold capitalize">
                     {field} ({analysis.matchPercentages[field]}%)
                   </h4>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex mt-2 flex-wrap gap-2">
                     {skills.map((skill, index) => (
                       <Badge
                         key={index}
                         className={`px-3 py-1 text-sm ${
                           theme === "dark"
                             ? "bg-green-500 text-white"
-                            : "bg-gray-200"
+                            : "bg-black text-white font-normal cursor-pointer"
                         }`}
                       >
                         {skill}
@@ -458,7 +481,7 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
             </div>
           </div>
 
-          <div className="mt-4">
+          <div className={`mt-4 ${theme === "dark" ? "" : "text-gray-600"}`}>
             <h3 className="font-semibold text-md">Skills to Improve:</h3>
             <div className="flex flex-wrap gap-3">
               {Object.entries(analysis.missingSkills).map(([field, skills]) => (
@@ -473,7 +496,7 @@ const SkillsAnalyser = ({ userSkills, theme }) => {
                         className={`px-3 py-1 text-sm ${
                           theme === "dark"
                             ? "bg-red-500 text-white"
-                            : "bg-gray-300"
+                            : "bg-black text-white font-normal cursor-pointer"
                         }`}
                       >
                         {skill}

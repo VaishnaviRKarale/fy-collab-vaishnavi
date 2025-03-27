@@ -13,8 +13,8 @@ import { ThemeContext } from "@/ThemeContext";
 import { toast } from "sonner";
 import SkillsAnalyser from "./SkillsAnalyser";
 import DashboardFirstDiv from "./DashboardFirstDiv";
+import MatchingJobs from "./MatchingJobs";
 
-// const skills = ["Html", "Css", "Javascript", "Reactjs"]
 const isResume = true;
 
 const Profile = () => {
@@ -29,6 +29,9 @@ const Profile = () => {
   const [displaySkills, setDisplaySkills] = useState([]);
 
   const [something, setSomething] = useState(true);
+
+  const [showAll, setShowAll] = useState(false);
+  const visibleSkills = showAll ? userSkills : userSkills.slice(0, 10);
 
   const handleAnalyseResume = () => {
     if (userSkills.length > 0) {
@@ -45,16 +48,16 @@ const Profile = () => {
       <Navbar />
       <div
         className={`p-8 gap-5 grid grid-cols-12 min-h-screen ${
-          theme === "dark" ? "bg-[#191919]" : ""
+          theme === "dark" ? "bg-[#191919] text-gray-200" : ""
         }`}
       >
         <div
-          className={`flex flex-col gap-4 col-span-7 min-h-screen ${
+          className={`flex flex-col gap-4 col-span-8 min-h-screen ${
             theme === "dark" ? "bg-[#191919]" : ""
           }`}
         >
           <div
-            className={`min-w-full  mx-auto rounded-xl p-8 ${
+            className={`w-full mx-auto rounded-xl p-8 ${
               theme === "dark"
                 ? "bg-[#2B2B2B] text-gray-300"
                 : "bg-white shadow-[5px_5px_20px_5px_rgba(0,0,0,0.08)]"
@@ -109,22 +112,42 @@ const Profile = () => {
             </div>
             <div className="my-5 flex flex-col gap-2">
               <h1>Skills</h1>
-              <div className={`flex items-center gap-4`}>
-                {user?.profile?.skills.length !== 0 ? (
-                  user?.profile?.skills.map((item, index) => (
-                    <Badge
-                      className={`transition delay-[0.3s] duration-500 cursor-pointer ${
+
+              <div className="w-full">
+                <div className="flex flex-wrap w-full items-center gap-2 justify-center md:justify-start rounded-md">
+                  {userSkills.length !== 0 ? (
+                    visibleSkills.map((item, index) => (
+                      <Badge
+                        className={`transition delay-[0.3s] duration-500 cursor-pointer font-normal px-3 py-1 rounded-full text-sm ${
+                          theme === "dark"
+                            ? "bg-gray-100 text-black hover:bg-gray-100 hover:text-black"
+                            : "bg-black text-white hover:bg-none hover:text-none"
+                        }`}
+                        key={index}
+                      >
+                        {item}
+                      </Badge>
+                    ))
+                  ) : (
+                    <span className="text-gray-700">
+                      Resume is not available
+                    </span>
+                  )}
+                </div>
+
+                {userSkills.length > 10 && (
+                  <div className="mt-3 flex justify-center md:justify-start">
+                    <Button
+                      onClick={() => setShowAll(!showAll)}
+                      className={`px-4 py-2 text-sm font-semibold rounded-md ${
                         theme === "dark"
-                          ? "bg-[#ec2525] shadow-[1px_1px_20px_7px_rgba(255,0,0,0.32)] hover:bg-[rgb(236,193,37)] hover:shadow-[1px_1px_20px_7px_rgba(236,193,37,0.32)]"
-                          : ""
+                          ? "bg-blue-600 text-white hover:bg-blue-700"
+                          : "bg-gray-300 text-gray-800 hover:bg-gray-400"
                       }`}
-                      key={index}
                     >
-                      {item}
-                    </Badge>
-                  ))
-                ) : (
-                  <span>Resume is not available</span>
+                      {showAll ? "Show Less" : "More Skills"}
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>
@@ -147,9 +170,6 @@ const Profile = () => {
 
           {/* <DashboardFirstDiv isResume={isResume} user={user} theme={theme} setOpen={setOpen} /> */}
 
-
-
-
           <div
             className={`p-8 rounded-xl ${
               theme === "dark"
@@ -162,7 +182,18 @@ const Profile = () => {
           </div>
           <UpdateProfileDialog open={open} setOpen={setOpen} />
         </div>
-        <div className={`col-span-5 text-gray-200`}>
+
+        <div
+          className={`p-8 h-min max-w-4xl mx-auto rounded-lg col-span-4  ${
+            theme === "dark"
+              ? "bg-[#2B2B2B] text-gray-300"
+              : "bg-white shadow-[5px_5px_20px_5px_rgba(0,0,0,0.08)]"
+          }`}
+        >
+          <MatchingJobs theme={theme} />
+        </div>
+
+        <div className={`col-span-8 text-gray-200`}>
           <div
             className={`p-8 rounded-xl ${
               theme === "dark"
@@ -190,12 +221,15 @@ const Profile = () => {
                   }`}
                 >
                   <p>Extracted Skills</p>
-                  <Button className={`rounded-sm h-8 w-8 bg-red-500 hover:bg-red-600`}
+                  <Button
+                    className={`rounded-sm h-8 w-8 bg-red-500 hover:bg-red-600`}
                     onClick={() => {
                       setDisplaySkills([]);
                       setSomething(true);
                     }}
-                  >x</Button>
+                  >
+                    x
+                  </Button>
                 </h2>
 
                 <div className="flex flex-wrap gap-3">

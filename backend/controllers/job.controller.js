@@ -3,36 +3,54 @@ import { Job } from "../models/job.model.js";
 // admin post krega job
 export const postJob = async (req, res) => {
     try {
-        const { title, description, requirements, salary, location, jobType, experience, position, companyId } = req.body;
+        const { 
+            title, description, requirements, salary, location, jobType, 
+            experience, position, companyId 
+        } = req.body;
         const userId = req.id;
 
+        // Validate required fields
         if (!title || !description || !requirements || !salary || !location || !jobType || !experience || !position || !companyId) {
             return res.status(400).json({
-                message: "Somethin is missing.",
+                message: "Something is missing. Please provide all required fields.",
                 success: false
-            })
-        };
+            });
+        }
+
+        // Ensure requirements is an array (not a string)
+        const formattedRequirements = Array.isArray(requirements) 
+            ? requirements 
+            : requirements.split(",").map(skill => skill.trim());
+
+        // Create new job
         const job = await Job.create({
             title,
             description,
-            requirements: requirements.split(","),
+            requirements: formattedRequirements,
             salary: Number(salary),
             location,
             jobType,
             experienceLevel: experience,
-            position,
+            position: parseInt(position, 10),  // Ensure position is an integer
             company: companyId,
             created_by: userId
         });
+
         return res.status(201).json({
             message: "New job created successfully.",
             job,
             success: true
         });
+
     } catch (error) {
-        console.log(error);
+        console.error("Error creating job:", error);
+        return res.status(500).json({
+            message: "Internal Server Error. Please try again later.",
+            success: false
+        });
     }
-}
+};
+
 // student k liye
 export const getAllJobs = async (req, res) => {
     try {

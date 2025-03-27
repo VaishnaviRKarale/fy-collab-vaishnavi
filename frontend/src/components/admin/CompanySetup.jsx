@@ -26,7 +26,7 @@ const CompanySetup = () => {
     const navigate = useNavigate();
 
     const changeEventHandler = (e) => {
-        setInput({ ...input, [e.target.name]: e.target.value });
+        setInput({ ...input, [e?.target?.name]: e?.target?.value });
     }
 
     const changeFileHandler = (e) => {
