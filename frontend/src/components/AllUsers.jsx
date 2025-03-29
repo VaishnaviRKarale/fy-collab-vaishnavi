@@ -50,8 +50,11 @@ const AllUsers = () => {
             >
               All Users
             </h2>
+
+
             <div className={`flex gap-4 items-start`}>
               {users.map((user) => (
+                
                 <div
                   key={user._id}
                   className={`p-6 rounded-2xl shadow-lg w-1/2 mx-auto ${theme === "dark" ? "bg-[#2b2b2b] text-white" : "bg-white text-gray-800 border shadow-sm"}`}
