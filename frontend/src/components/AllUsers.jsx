@@ -54,18 +54,18 @@ const AllUsers = () => {
               {users.map((user) => (
                 <div
                   key={user._id}
-                  className="bg-[#2b2b2b] text-white p-6 rounded-2xl shadow-lg max-w-sm mx-auto hover:shadow-2xl transition-shadow duration-300"
+                  className={`p-6 rounded-2xl shadow-lg w-1/2 mx-auto ${theme === "dark" ? "bg-[#2b2b2b] text-white" : "bg-white text-gray-800 border shadow-sm"}`}
                 >
                   <div className="flex flex-col items-center">
                     <img
                       src={user?.profile?.profilePhoto}
                       alt="Profile"
-                      className="w-24 h-24 rounded-full border-4 border-gray-700 shadow-md"
+                      className="w-24 h-24 rounded-full shadow-md"
                     />
                     <h2 className="text-xl font-semibold mt-4">
                       {user.fullname}
                     </h2>
-                    <p className="text-gray-300 mt-3 text-center">
+                    <p className={`mt-3 text-center ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
                       {user?.profile?.bio}
                     </p>
                     <button
