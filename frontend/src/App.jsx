@@ -17,6 +17,7 @@ import Applicants from './components/admin/Applicants'
 import ProtectedRoute from './components/admin/ProtectedRoute'
 import AllUsers from './components/AllUsers'
 import WrongPage from './components/WrongPage'
+import ChatComponent from './components/ChatComponent'
 
 
 const appRouter = createBrowserRouter([
@@ -55,6 +56,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/network",
     element: <AllUsers />
+  },
+  {
+    path: "/chatroom", 
+    element: <ChatComponent />
   },
   {
     path: "/*",

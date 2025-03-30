@@ -1,4 +1,5 @@
 import { User } from "../models/user.model.js";
+import { Message } from "../models/messages.model.js";
 import { Job } from "../models/job.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -269,3 +270,23 @@ export const getMatchingJobs = async (req, res) => {
       .json({ message: "Internal server error", success: false });
   }
 };
+
+
+
+export const deletemessages = async (req, res) => {
+  try {
+    const userId = req.id
+    const user = await User.findById(userId);
+
+    if(user.email !== "harshal1@gmail.com") {
+      console.log("You have no access to this!")
+      return;
+    }
+
+    await Message.deleteMany({});
+    res.json({ success: true, message: "All messages deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting messages:", error);
+    res.status(500).json({ success: false, message: "Failed to delete messages." });
+  }
+}
