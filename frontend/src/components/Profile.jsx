@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import SkillsAnalyser from "./SkillsAnalyser";
 import DashboardFirstDiv from "./DashboardFirstDiv";
 import MatchingJobs from "./MatchingJobs";
+import ChatComponent from "./ChatComponent";
 
 const isResume = true;
 
@@ -251,6 +252,9 @@ const Profile = () => {
             )}
           </div>
         </div>
+      </div>
+      <div className="p-8">
+        <ChatComponent />
       </div>
     </>
   );
