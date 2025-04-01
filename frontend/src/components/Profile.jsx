@@ -15,6 +15,7 @@ import SkillsAnalyser from "./SkillsAnalyser";
 import DashboardFirstDiv from "./DashboardFirstDiv";
 import MatchingJobs from "./MatchingJobs";
 import ChatComponent from "./ChatComponent";
+import Footer from "./Footer";
 
 const isResume = true;
 
